@@ -70,7 +70,8 @@ export const getSongInfo = async (videoId: string) => {
 export const generateTabs = async (
   videoId: string, 
   useCapo: boolean, 
-  isFingerStyle: boolean
+  isFingerStyle: boolean,
+  useSourceSeparation: boolean = true
 ) => {
   if (USE_MOCK_DATA) {
     // Original mock implementation updated to match new API response format
@@ -282,7 +283,8 @@ Capo on 2nd fret
       const requestBody = {
         url: videoUrl,
         use_capo: useCapo,
-        is_fingerstyle: isFingerStyle
+        is_fingerstyle: isFingerStyle,
+        use_source_separation: useSourceSeparation
       };
       
       console.log('Making tab generation request with body:', requestBody);

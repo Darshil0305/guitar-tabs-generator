@@ -23,6 +23,7 @@ export default function Home() {
   const [strummingPattern, setStrummingPattern] = useState<string | null>(null);
   const [useCapo, setUseCapo] = useState(false);
   const [isFingerStyle, setIsFingerStyle] = useState(false);
+  const [useSourceSeparation, setUseSourceSeparation] = useState(true);
 
   // Listen for song detail updates from the API
   useEffect(() => {
@@ -56,7 +57,12 @@ export default function Home() {
       setSongDetails(songInfo as SongDetails);
       
       // Generate tabs based on options
-      const tabResult = await generateTabs(videoId, useCapo, isFingerStyle);
+      const tabResult = await generateTabs(
+        videoId, 
+        useCapo, 
+        isFingerStyle, 
+        useSourceSeparation
+      );
       
       // Check if the result is in the new format with both tabContent and strummingPattern
       if (tabResult && typeof tabResult === 'object' && 'tabContent' in tabResult) {
@@ -84,7 +90,12 @@ export default function Home() {
     
     setIsLoading(true);
     try {
-      const tabResult = await generateTabs(songDetails.videoId, useCapo, isFingerStyle);
+      const tabResult = await generateTabs(
+        songDetails.videoId, 
+        useCapo, 
+        isFingerStyle,
+        useSourceSeparation
+      );
       
       // Check if the result is in the new format
       if (tabResult && typeof tabResult === 'object' && 'tabContent' in tabResult) {
@@ -105,12 +116,12 @@ export default function Home() {
     }
   };
 
-  // Update tabs when capo or playing style changes
+  // Update tabs when capo, playing style, or source separation changes
   React.useEffect(() => {
     if (songDetails && songDetails.videoId) {
       handleOptionsChange();
     }
-  }, [useCapo, isFingerStyle]);
+  }, [useCapo, isFingerStyle, useSourceSeparation]);
 
   return (
     <div className="flex flex-col min-h-screen fretboard-bg">
@@ -142,7 +153,9 @@ export default function Home() {
                 useCapo={useCapo} 
                 setUseCapo={setUseCapo} 
                 isFingerStyle={isFingerStyle} 
-                setIsFingerStyle={setIsFingerStyle} 
+                setIsFingerStyle={setIsFingerStyle}
+                useSourceSeparation={useSourceSeparation}
+                setUseSourceSeparation={setUseSourceSeparation}
               />
             </div>
           )}
